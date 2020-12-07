@@ -30,6 +30,7 @@ import config
 from App import controller
 from DISClib.ADT import stack
 import timeit
+
 assert config
 
 """
@@ -51,3 +52,28 @@ operación seleccionada.
 """
 Menu principal
 """
+
+
+def show_menu():
+    menu_op = ["Salir", "Prueba"]
+
+    for c, op in enumerate(menu_op):
+        print(f"{c}) {op}")
+
+    print("*" * 15)
+
+
+def menu():
+    show_menu()
+    return int(input("Ingresa la opcion: "))
+
+
+def main():
+    while (op := menu()) != 0:
+        solver[op - 1]()
+
+
+if __name__ == "__main__":
+
+    solver = controller.get_solver()
+    main()

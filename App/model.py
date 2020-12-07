@@ -31,6 +31,7 @@ from DISClib.DataStructures import listiterator as it
 from DISClib.Algorithms.Graphs import scc
 from DISClib.Algorithms.Graphs import dijsktra as djk
 from DISClib.Utils import error as error
+
 assert config
 
 """
@@ -41,6 +42,11 @@ de creacion y consulta sobre las estructuras de datos.
 # -----------------------------------------------------
 #                       API
 # -----------------------------------------------------
+
+
+def init():
+    return 1
+
 
 # Funciones para agregar informacion al grafo
 

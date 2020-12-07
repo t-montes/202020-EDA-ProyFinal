@@ -28,6 +28,10 @@ import config as cf
 from App import model
 import csv
 
+file = cf.data_dir + "taxi-trips-wrvz-psew-subset-small.csv"
+
+analyzer = dict()
+
 """
 El controlador se encarga de mediar entre la vista y el modelo.
 Existen algunas operaciones en las que se necesita invocar
@@ -35,6 +39,38 @@ el modelo varias veces o integrar varias de las respuestas
 del modelo en una sola respuesta.  Esta responsabilidad
 recae sobre el controlador.
 """
+
+
+def init():
+    global analyzer
+
+    analyzer = model.init()
+    return analyzer
+
+
+def foo():
+    print("hola")
+
+
+def faa():
+    print("j")
+
+
+def load(file):
+    global analyzer
+    with open(file, encoding="utf-8") as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            analyzer["info"] = analyzer.get("info", []) + [row]
+
+    print()
+
+
+def get_solver():
+    return (init, load, faa, foo)
+
+
+load(file)
 
 # ___________________________________________________
 #  Inicializacion del catalogo
@@ -45,6 +81,7 @@ recae sobre el controlador.
 #  Funciones para la carga de datos y almacenamiento
 #  de datos en los modelos
 # ___________________________________________________
+
 
 # ___________________________________________________
 #  Funciones para consultas
