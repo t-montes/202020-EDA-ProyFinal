@@ -27,11 +27,7 @@
 import config as cf
 from App import model
 import csv
-
-file = cf.data_dir + "taxi-trips-wrvz-psew-subset-small.csv"
-
-analyzer = dict()
-
+import os
 """
 El controlador se encarga de mediar entre la vista y el modelo.
 Existen algunas operaciones en las que se necesita invocar
@@ -41,36 +37,39 @@ recae sobre el controlador.
 """
 
 
+def travel_lst(lista, parameter=None):
+    return model.travel_lst(lista, parameter)
+
+
+def travel_map(Map):
+    return model.travel_map(Map)
+
+
+def timer(func):
+    from time import process_time
+
+    def inner(*args, **kwargs):
+        t1 = process_time()
+        ret = func(*args, **kwargs)
+        t2 = process_time()
+        print(
+            f"El tiempo que tardó la funcion {func.__name__} fue de {t2 - t1} segundos.")
+        return ret
+    return inner
+
+
+@timer
 def init():
-    global analyzer
-
-    analyzer = model.init()
-    return analyzer
+    return model.init()
 
 
-def foo():
-    print("hola")
-
-
-def faa():
-    print("j")
-
-
-def load(file):
-    global analyzer
-    with open(file, encoding="utf-8") as csvfile:
+@timer
+def load(filename, analyzer):
+    with open(cf.data_dir + filename, encoding="utf-8") as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
-            analyzer["info"] = analyzer.get("info", []) + [row]
-
-    print()
-
-
-def get_solver():
-    return (init, load, faa, foo)
-
-
-load(file)
+            model.addtaxi(analyzer, row)
+            model.addCommunityArea(analyzer, row)
 
 # ___________________________________________________
 #  Inicializacion del catalogo

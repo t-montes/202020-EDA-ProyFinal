@@ -29,6 +29,9 @@ import sys
 import config
 from App import controller
 from DISClib.ADT import stack
+from DISClib.ADT import orderedmap as om
+from DISClib.ADT import graph as gr
+from DISClib.ADT import map as m
 import timeit
 
 assert config
@@ -53,27 +56,74 @@ operación seleccionada.
 Menu principal
 """
 
+recursionLimit = 20000
+sys.setrecursionlimit(recursionLimit)
+
+
+class InputError(Exception):
+    pass
+
+
+filenames = ("taxi-trips-wrvz-psew-subset-small.csv",
+             "taxi-trips-wrvz-psew-subset-medium.csv",
+             "taxi-trips-wrvz-psew-subset-large.csv")
+
+num = 0
+
 
 def show_menu():
-    menu_op = ["Salir", "Parte A", "Parte B", "Parte C"]
-
+    menu_op = ["Inicializar Analizador",
+               "Cargar Datos",
+               "Parte A",
+               "Parte B",
+               "Parte C",
+               "Salir"]
+    print("*"*30)
     for c, op in enumerate(menu_op):
-        print(f"{c}) {op}")
-
-    print("*" * 15)
+        print(f"{c+1}) {op}")
+    print("*"*30)
 
 
 def menu():
     show_menu()
-    return int(input("Ingresa la opcion: "))
+    return int(input("Ingresa la opcion:\n>"))
+
+
+def argbytype(txt: str, tp: type = str):
+    try:
+        ret = tp(input(txt))
+    except TypeError as tE:
+        if tE.args[0].endswith("callable"):
+            raise tE
+        else:
+            raise InputError(f"Wrong input, type:'{tp}' expected.")
+    return ret
+
+
+def solver(opt: int, *args):
+    if opt == 0:
+        globals().update({"analyzer": controller.init()})
+    elif opt == 1:
+        controller.load(filenames[num], analyzer)
+        print(f"taxis.Size = {m.size(analyzer['taxis'])}")
+        print(f"graph.Vertices.Size = {gr.numVertices(analyzer['graph'])}")
+        print(f"graph.Edges.Size = {gr.numEdges(analyzer['graph'])}")
+
+    elif opt == 2:
+        1
+    elif opt == 3:
+        1
+    elif opt == 4:
+        1
+    else:
+        return "finish"
 
 
 def main():
     while (op := menu()) != 0:
-        solver[op - 1]()
+        if solver(op - 1) == "finish":
+            break
 
 
 if __name__ == "__main__":
-
-    solver = controller.get_solver()
     main()
