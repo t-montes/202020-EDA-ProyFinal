@@ -28,6 +28,7 @@ import config as cf
 from App import model
 import csv
 import os
+import datetime
 """
 El controlador se encarga de mediar entre la vista y el modelo.
 Existen algunas operaciones en las que se necesita invocar
@@ -70,6 +71,7 @@ def load(filename, analyzer):
         for row in reader:
             model.addtaxi(analyzer, row)
             model.addCommunityArea(analyzer, row)
+
         print("Se han cargado las estructuras de datos.\n"
               + "\t• Se utilizó una HashTable para los taxis.\n"
               + "\t• Se cargó el Grafo para los viajes entre Community Areas.")
@@ -110,3 +112,17 @@ def reqA(analyzer):
     print(f"\nEl top {N} de compañías por servicios prestados son:")
     for num, i in enumerate(travel_lst(topN)):
         print(f"\t• {num+1}) {i} - {companies[i]['servnum']}")
+
+
+def reqC(analyzer):
+    startCA = int(input(f"Digite el número de Community Area inicial:\n>>"))
+    endCA = int(input(f"Digite el número de Community Area final:\n>>"))
+    time_in = input(
+        f"Digite el tiempo de rango inicial; de la forma:\n  HH:MM\n>>")
+    time_in = datetime.datetime.strptime(
+        time_in, '%H:%M')
+    time_end = input(
+        f"Digite el tiempo de rango final; de la forma:\n  HH:MM\n>>")
+    time_end = datetime.datetime.strptime(
+        time_end, '%H:%M')
+    return model.reqC(analyzer, startCA, endCA, time_in, time_end)

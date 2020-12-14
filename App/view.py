@@ -111,7 +111,7 @@ def solver(opt: int,):
     elif opt == 4:
         1
     elif opt == 5:
-        1
+        controller.reqC(analyzer)
     else:
         print("Hasta pronto!")
         return "finish"

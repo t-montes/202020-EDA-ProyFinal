@@ -116,6 +116,8 @@ def init():
         maptype="CHAINING", comparefunction=compfun("key", "y"))
     analyzer["graph"] = gr.newGraph(
         datastructure="ADJ_LIST", directed=True, comparefunction=compfun("key", "y"))
+    analyzer["CAreas"] = m.newMap(
+        maptype="CHAINING", comparefunction=compfun("key", "y"))
     return analyzer
 
 
@@ -137,12 +139,9 @@ def addtaxi(analyzer, row):
                  }
         m.put(analyzer["taxis"], row["taxi_id"], value)
     else:
-        value = {"company": row["company"] if row["company"] else "Independent Owner",
-                 "miles": try_convert(row["trip_miles"], float, 0) + got["value"]["miles"],
-                 "money": try_convert(row["trip_total"], float, 0) + got["value"]["money"],
-                 "dates": [getDateTimeTaxiTrip(row)] + got["value"]["dates"]
-                 }
-        m.put(analyzer["taxis"], row["taxi_id"], value)
+        got["value"]["miles"] += try_convert(row["trip_miles"], float, 0)
+        got["value"]["money"] += try_convert(row["trip_total"], float, 0)
+        got["value"]["dates"] += [getDateTimeTaxiTrip(row)]
 
 # Funciones para agregar informacion al grafo
 
@@ -154,13 +153,19 @@ def addCommunityArea(analyzer, row):
     begin = try_convert(try_convert(row["pickup_community_area"]), int)
     end = try_convert(try_convert(row["dropoff_community_area"]), int)
     cost = try_convert(row["trip_seconds"])
-
     # Si los dos son diferentes a 0 (es decir, si la casilla no está vacía)
-    if all([begin, end]):
+    if all([begin, end]) and begin != end:
         gr.addEdge(analyzer["graph"],
                    begin,
                    end,
                    cost)
+    exBegin = m.get(analyzer["CAreas"], begin)
+    if exBegin is None:
+        m.put(analyzer["CAreas"], begin, [
+              (getDateTimeTaxiTrip(row).time(), end)])
+    else:
+        exBegin["value"].append((getDateTimeTaxiTrip(row).time(), end))
+    # Solo se agrega el de ida, pues el grafo es dirigido.
 
 # ==============================
 # Funciones de consulta
@@ -208,3 +213,7 @@ def reqApart2(companies, M, N):
         keepM, keepN = topM['size'] < M, topN['size'] < N
 
     return topM, topN
+
+def reqC(analyzer, startCA, endCA, time_in, time_end):
+    edges = m.get(analyzer["graph"]["vertices"], startCA)
+    print(edges)
