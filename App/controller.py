@@ -114,6 +114,33 @@ def reqA(analyzer):
         print(f"\t• {num+1}) {i} - {companies[i]['servnum']}")
 
 
+def reqB(analyzer):
+    print("Parte 1. Identificar el top en una fecha")
+    N = int(
+        input("Digite el número de taxis del top (N):\n>>"))
+    fch = input(
+        "Digite la fecha en la que desea realizar el top de la forma;\n  YYYY-MM-DD\n>>")
+    fecha = datetime.datetime.strptime(fch, "%Y-%m-%d").date()
+    topN = model.reqBpart1(analyzer, N, fecha)
+    print(f"El top {N} de taxis en la fecha ({fch}) son:")
+    for num, i in enumerate(travel_lst(topN)):
+        print(f"\t• {num+1}) {i}")
+
+    print("Parte 2. Identificar el top en un rango de fechas")
+    M = int(
+        input("Digite el número de taxis del top (M):\n>>"))
+    fch1 = input(
+        "Digite la fecha inicial en la que desea realizar el top de la forma;\n  YYYY-MM-DD\n>>")
+    fecha1 = datetime.datetime.strptime(fch1, "%Y-%m-%d").date()
+    fch2 = input(
+        "Digite la fecha final en la que desea realizar el top de la forma;\n  YYYY-MM-DD\n>>")
+    fecha2 = datetime.datetime.strptime(fch2, "%Y-%m-%d").date()
+    topM = model.reqBpart2(analyzer, M, fecha1, fecha2)
+    print(f"El top {M} de taxis entre las fechas ({fch1} y {fch2}) son:")
+    for num, i in enumerate(travel_lst(topM)):
+        print(f"\t• {num+1}) {i}")
+
+
 def reqC(analyzer):
     startCA = int(input(f"Digite el número de Community Area inicial:\n>>"))
     endCA = int(input(f"Digite el número de Community Area final:\n>>"))

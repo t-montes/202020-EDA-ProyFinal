@@ -109,7 +109,7 @@ def solver(opt: int,):
     elif opt == 3:
         controller.reqA(analyzer)
     elif opt == 4:
-        1
+        controller.reqB(analyzer)
     elif opt == 5:
         controller.reqC(analyzer)
     else:

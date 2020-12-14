@@ -135,13 +135,13 @@ def addtaxi(analyzer, row):
         value = {"company": row["company"] if row["company"] else "Independent Owner",
                  "miles": try_convert(row["trip_miles"], float, 0),
                  "money": try_convert(row["trip_total"], float, 0),
-                 "dates": [getDateTimeTaxiTrip(row)]
+                 "dates": [getDateTimeTaxiTrip(row).date()]
                  }
         m.put(analyzer["taxis"], row["taxi_id"], value)
     else:
         got["value"]["miles"] += try_convert(row["trip_miles"], float, 0)
         got["value"]["money"] += try_convert(row["trip_total"], float, 0)
-        got["value"]["dates"] += [getDateTimeTaxiTrip(row)]
+        got["value"]["dates"] += [getDateTimeTaxiTrip(row).date()]
 
 # Funciones para agregar informacion al grafo
 
@@ -213,6 +213,49 @@ def reqApart2(companies, M, N):
         keepM, keepN = topM['size'] < M, topN['size'] < N
 
     return topM, topN
+
+
+def reqBpart1(analyzer, N, fecha):
+    mp = {}
+    for key, value in travel_map(analyzer["taxis"]):
+        if fecha in value["dates"] and value["money"] != 0:
+            puntos = value["miles"]/value["money"]
+            mp[key] = puntos
+    final = lt.newList("ARRAY_LIST")
+    if mp == {}:
+        return final
+    while final["size"] < N:
+        mayor = 0
+        for i in mp:
+            if mp[i] > mayor and i not in final['elements']:
+                mayor = mp[i]
+                bestkey = i
+        lt.addLast(final, bestkey)
+    return final
+
+
+def reqBpart2(analyzer, M, fecha1, fecha2):
+    mp = {}
+    for key, value in travel_map(analyzer["taxis"]):
+        has = False
+        for i in value["dates"]:
+            if fecha1 <= i <= fecha2:
+                has = True
+        if has and value["money"] != 0:
+            puntos = value["miles"]/value["money"]
+            mp[key] = puntos
+    final = lt.newList("ARRAY_LIST")
+    if mp == {}:
+        return final
+    while final["size"] < M:
+        mayor = 0
+        for i in mp:
+            if mp[i] > mayor and i not in final['elements']:
+                mayor = mp[i]
+                bestkey = i
+        lt.addLast(final, bestkey)
+    return final
+
 
 def reqC(analyzer, startCA, endCA, time_in, time_end):
     edges = m.get(analyzer["graph"]["vertices"], startCA)
