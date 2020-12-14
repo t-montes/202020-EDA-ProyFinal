@@ -24,6 +24,7 @@
  *
  """
 import config
+from functools import partial
 from DISClib.ADT.graph import gr
 from DISClib.ADT import map as m
 from DISClib.ADT import orderedmap as om
@@ -33,6 +34,7 @@ from DISClib.DataStructures import listiterator as it
 from DISClib.Algorithms.Graphs import scc
 from DISClib.Algorithms.Graphs import dijsktra as djk
 from DISClib.Utils import error as error
+from DISClib.Algorithms.Sorting import mergesort
 import datetime
 assert config
 
@@ -163,3 +165,46 @@ def addCommunityArea(analyzer, row):
 # ==============================
 # Funciones de consulta
 # ==============================
+
+
+def reqApart1(analyzer):
+    companies = {}
+    # Diccionario que almacena las compañías
+    # O(analyzer["taxis"]["size"])
+    for key, value in travel_map(analyzer["taxis"]):
+        if value["company"] in companies:
+            companies[value["company"]]["taxnum"] += 1
+            companies[value["company"]]["servnum"] += len(value["dates"])
+        else:
+            companies[value["company"]] = {
+                "taxnum": 1, "servnum": len(value["dates"])}
+    return companies
+
+
+def reqApart2(companies, M, N):
+    topM = lt.newList(datastructure="ARRAY_LIST")
+    topN = lt.newList(datastructure="ARRAY_LIST")
+    # O(len(companies)*(max(M,N)))
+    keepM, keepN = topM['size'] < M, topN['size'] < N
+    while keepM or keepN:
+        bestM = 0
+        bestN = 0
+        for i in companies:
+            if keepM:
+                taxnum = companies[i]["taxnum"]
+                if taxnum > bestM and i not in topM['elements']:
+                    bestM = taxnum
+                    compM = i
+            if keepN:
+                servnum = companies[i]["servnum"]
+                if servnum > bestN and i not in topN['elements']:
+                    bestN = servnum
+                    compN = i
+        if keepM:
+            lt.addLast(topM, compM)
+        if keepN:
+            lt.addLast(topN, compN)
+
+        keepM, keepN = topM['size'] < M, topN['size'] < N
+
+    return topM, topN

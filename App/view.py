@@ -100,28 +100,26 @@ def argbytype(txt: str, tp: type = str):
     return ret
 
 
-def solver(opt: int, *args):
-    if opt == 0:
+def solver(opt: int,):
+    global num, filenames
+    if opt == 1:
         globals().update({"analyzer": controller.init()})
-    elif opt == 1:
-        controller.load(filenames[num], analyzer)
-        print(f"taxis.Size = {m.size(analyzer['taxis'])}")
-        print(f"graph.Vertices.Size = {gr.numVertices(analyzer['graph'])}")
-        print(f"graph.Edges.Size = {gr.numEdges(analyzer['graph'])}")
-
     elif opt == 2:
-        1
+        controller.load(filenames[num], analyzer)
     elif opt == 3:
-        1
+        controller.reqA(analyzer)
     elif opt == 4:
         1
+    elif opt == 5:
+        1
     else:
+        print("Hasta pronto!")
         return "finish"
 
 
 def main():
     while (op := menu()) != 0:
-        if solver(op - 1) == "finish":
+        if solver(op) == "finish":
             break
 
 

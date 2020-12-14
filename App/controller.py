@@ -53,7 +53,7 @@ def timer(func):
         ret = func(*args, **kwargs)
         t2 = process_time()
         print(
-            f"El tiempo que tardó la funcion {func.__name__} fue de {t2 - t1} segundos.")
+            f"El tiempo que tardó la funcion {func.__name__} fue de {t2 - t1} segundos.\n")
         return ret
     return inner
 
@@ -70,6 +70,9 @@ def load(filename, analyzer):
         for row in reader:
             model.addtaxi(analyzer, row)
             model.addCommunityArea(analyzer, row)
+        print("Se han cargado las estructuras de datos.\n"
+              + "\t• Se utilizó una HashTable para los taxis.\n"
+              + "\t• Se cargó el Grafo para los viajes entre Community Areas.")
 
 # ___________________________________________________
 #  Inicializacion del catalogo
@@ -85,3 +88,25 @@ def load(filename, analyzer):
 # ___________________________________________________
 #  Funciones para consultas
 # ___________________________________________________
+
+
+def reqA(analyzer):
+    companies = model.reqApart1(analyzer)
+    print(
+        f"El número de taxis registrados son: {analyzer['taxis']['size']}")
+    print(
+        f"El número de compañías con al menos un taxi inscrito son: {len(companies)}\n")
+    M = int(
+        input("Digite el número de compañías del top por taxis afiliados (M):\n>>"))
+    N = int(
+        input("Digite el número de compañías del top por servicios prestados (N):\n>>"))
+
+    topM, topN = model.reqApart2(companies, M, N)
+
+    print(f"El top {M} de compañías por taxis afiliados son:")
+    for num, i in enumerate(travel_lst(topM)):
+        print(f"\t• {num+1}) {i} - {companies[i]['taxnum']}")
+
+    print(f"\nEl top {N} de compañías por servicios prestados son:")
+    for num, i in enumerate(travel_lst(topN)):
+        print(f"\t• {num+1}) {i} - {companies[i]['servnum']}")
