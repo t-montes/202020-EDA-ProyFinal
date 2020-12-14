@@ -208,3 +208,28 @@ def reqApart2(companies, M, N):
         keepM, keepN = topM['size'] < M, topN['size'] < N
 
     return topM, topN
+
+def puntos (companies):
+   #funcion que calcula puntos y ordena en mmayor a menor los puntos
+    pass
+
+def  reqBpart1 (companies, N, fecha):
+    Puntos = puntos(companies)
+    final = lt.newList(datastructure="ARRAY_LIST")
+    i=0
+    while final["size"] >= N:
+        if (companies[i]["fecha"]) == fecha:
+            final.addLast(companies[i]["taxi_id"])
+            i+=1
+    return final
+
+    
+def reqBpart2 (companies,M,fecha1,fecha2):
+    Puntos = puntos(companies)
+    final2 = lt.newList(datastructure="ARRAY_LIST")
+    i=0
+    while final["size"] >= N:
+        if (companies[i]["fecha"]) >= fecha1 and <= fecha2:
+            final.addLast(companies[i]["taxi_id"])
+            i+=1
+    return final2
