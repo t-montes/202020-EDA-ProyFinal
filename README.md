@@ -1,22 +1,27 @@
-#ISIS1225 - Estructura de un proyecto
+# Estructuras de Datos y Algoritmos
 
-Este proyecto busca mostrar una posible forma de organizar el código que se va a desarrollar en los proyectos del curso.
+## Proyecto Final
 
-Esta organización es una sugerencia que puede ser adaptada a  las necesidades y gustos de cada persona.
+Integrantes:
+
+- Isaac David Bermudez
+- Valeria Pinzón Sierra
+- Tony Santiago Montes Buitrago - <t.montes@uniandes.edu.co>
+
+*Fecha de realización: Diciembre/2020*
+
+Este repositorio contiene el proyecto final del curso Estructuras de Datos y Algoritmos; en el directorio raíz está el enunciado del proyecto y dentro de la carpeta `/Data/` se encuentra un [CSV de ejemplo](/App/Data/taxi-trips-wrvz-psew-subset-small.csv) de los datos de entrada del proyecto.
+
 
 La estructura tiene los siguiente directorios y archivos:
 
--App
+### `/App`
+Este directorio se utiliza para los archivos python desarrollados para responder al proyecto, basados en el patrón de diseño Model, View, Controller (MVC).
 
-Este directorio se utiliza para los archivos python desarrollados para responder a los retos del curso. Acá se pueden tener todos los archivos python que se necesiten
+### `/App/Data`
+Este directorio contiene los datos/archivos de prueba para el proyecto.
 
--Data
-Este directorio contiene los datos/archivos de prueba para cada uno de los retos
-
--Docs
-Este directorio tiene documentos anexos al proyecto donde se explican decisiones de diseño, análisis de algoritmos y en general información asociada al código desarrollado por cada grupo
-
--Lib
+### `/Lib`
 Este directorio contiene todo el código de base que se entrega para el funcionamiento del curso.  Dentro de este directorio encuentran:
     
     |-- ADT:  Directorio con los Tipos Abstractos de Datos del curso
@@ -27,6 +32,5 @@ Este directorio contiene todo el código de base que se entrega para el funciona
 
     |-- Utils: Funciones auxiliares para el funcionamiento de los TADs y estructuras de datos
 
--Test
+### `Test`
 Este directorio contiene las pruebas realizadas a los TADs, Estructuras de Datos y Algoritmos.
-
